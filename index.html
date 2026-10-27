@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>JDZ Solutions Photo-Locked Video Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;800&display=swap">
+<style>
+/* Same Tron look as the Kuljit summary: reading column, panels, status table, numbered next steps. */
+:root {
+  --bg: #020711;
+  --panel: rgba(5, 16, 29, .88);
+  --panel2: rgba(8, 28, 52, .7);
+  --line: rgba(52, 215, 255, .26);
+  --fg: #d8ecff;
+  --muted: #8fb4d6;
+  --cy: #34d7ff;
+  --bl: #158cff;
+  --or: #ff9f1a;
+  --ok: #2ee59d;
+  --warn: #ffc247;
+  --bad: #ff7d8a;
+  --term: "VT323", ui-monospace, Menlo, monospace;
+  --disp: "Orbitron", "Inter", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background-color: var(--bg);
+  background-image: linear-gradient(rgba(52,215,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(52,215,255,.05) 1px, transparent 1px);
+  background-size: 38px 38px;
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 15.5px;
+  line-height: 1.55;
+  padding-block: 32px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+h1, h2, h3 { font-family: var(--disp); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(28px, 6vw, 46px); line-height: 1.08; letter-spacing: .02em; text-transform: uppercase; }
+h1 span { color: var(--cy); }
+h2 { font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--cy); }
+h2::before { content: "/ "; }
+h3 { font-size: 14px; letter-spacing: .04em; line-height: 1.25; }
+p { margin: 0; max-width: 70ch; }
+.eyebrow { font-family: var(--term); font-size: 20px; letter-spacing: .14em; text-transform: uppercase; color: var(--cy); }
+.lede { font-size: 17.5px; color: var(--muted); }
+.hd { display: flex; flex-direction: column; gap: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--term); font-size: 17px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 0 10px; color: var(--muted); white-space: nowrap; }
+.chip.ok { color: var(--ok); border-color: rgba(46,229,157,.5); }
+.chip.warn { color: var(--warn); border-color: rgba(255,194,71,.5); }
+.chip.acc { color: var(--cy); border-color: rgba(52,215,255,.6); }
+section { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.panel { border: 1px solid var(--line); border-radius: 16px; padding: 18px; background: var(--panel); box-shadow: 0 0 40px -24px var(--cy); display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.panel p { color: var(--muted); font-size: 14.5px; }
+.panel.key { border-color: rgba(255,159,26,.55); box-shadow: 0 0 40px -26px var(--or); }
+.panel.key h3 { color: var(--or); }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+.grid3 > * { min-width: 0; }
+.kv { display: grid; grid-template-columns: 9em 1fr; gap: 8px 16px; margin: 0; font-size: 15px; }
+.kv dt { font-family: var(--term); font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: var(--cy); line-height: 1.3; }
+.kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 560px) { .kv { grid-template-columns: 1fr; gap: 0; } .kv dd { margin-bottom: 10px; } }
+ul.b { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; max-width: 76ch; }
+ul.b li { min-width: 0; overflow-wrap: anywhere; }
+ul.b li::marker { color: var(--cy); }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 14.5px; }
+th { text-align: left; font-family: var(--term); font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: var(--cy); background: var(--panel2); padding: 8px 14px; font-weight: 400; }
+td { padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+.flow { display: flex; flex-direction: column; counter-reset: s; }
+.step { display: grid; grid-template-columns: 38px 1fr; gap: 14px; padding-bottom: 20px; position: relative; }
+.step::before { content: ""; position: absolute; left: 18px; top: 40px; bottom: 2px; width: 2px; background: var(--line); }
+.step:last-child { padding-bottom: 0; }
+.step:last-child::before { display: none; }
+.step .n { counter-increment: s; width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--cy); box-shadow: 0 0 10px rgba(52,215,255,.5); display: grid; place-items: center; font-family: var(--term); font-size: 22px; color: var(--cy); }
+.step .n::before { content: counter(s); }
+.step .t { min-width: 0; padding-top: 6px; }
+.step .t b { font-weight: 600; }
+.step .t span { color: var(--muted); display: block; font-size: 14.5px; }
+.src { font-family: var(--term); font-size: 17px; letter-spacing: .06em; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 14px; max-width: none; }
+:focus-visible { outline: 2px solid var(--cy); outline-offset: 2px; }
+a { color: var(--cy); }
+.st { font-family: var(--term); font-size: 17px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 0 10px; white-space: nowrap; display: inline-block; color: var(--muted); }
+.st.ok { color: var(--ok); border-color: rgba(46,229,157,.5); }
+.st.warn { color: var(--warn); border-color: rgba(255,194,71,.5); }
+.st.todo { color: var(--cy); border-color: rgba(52,215,255,.6); }
+.st.hold { color: var(--bad); border-color: rgba(255,125,138,.5); }
+td:nth-child(2) { font-weight: 400; white-space: normal; }
+
+.hero-eyebrow { font-family: var(--term); font-size: 20px; letter-spacing: .14em; text-transform: uppercase; color: var(--cy); }
+.brand { display: flex; align-items: baseline; gap: 10px; font-family: var(--disp); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: 15px; }
+.brand b { color: var(--cy); }
+.brand span { color: var(--muted); font-family: var(--term); font-weight: 400; letter-spacing: .1em; font-size: 19px; }
+.ex { display: flex; flex-direction: column; gap: 16px; }
+.pair { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; align-items: start; }
+@media (max-width: 760px) { .pair { grid-template-columns: minmax(0, 1fr); } }
+figure { margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+figure .frame { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 0 40px -24px var(--cy); }
+figure img, figure video { display: block; width: 100%; height: auto; max-width: 100%; }
+figcaption { font-family: var(--term); font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+figcaption b { color: var(--cy); font-weight: 400; }
+.lock { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.lock > * { min-width: 0; }
+.panel.gen h3 { color: var(--ok); }
+.panel.fix h3 { color: var(--cy); }
+.shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.shots figure .frame { border-radius: 8px; box-shadow: none; aspect-ratio: 4 / 3; }
+.shots figure img { width: 100%; height: 100%; object-fit: cover; }
+.shotcap { grid-column: 1 / -1; font-family: var(--term); font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.shotcap b { color: var(--cy); font-weight: 400; }
+.soon { border: 1px dashed var(--line); border-radius: 16px; padding: 22px 18px; background: var(--panel); display: flex; flex-direction: column; gap: 8px; }
+.soon .chip { align-self: flex-start; }
+
+#gate { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 16px; background: var(--bg); }
+#gate form { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; border: 1px solid var(--line); border-radius: 16px; padding: 22px; background: var(--panel); box-shadow: 0 0 40px -24px var(--cy); }
+#gate label { display: flex; flex-direction: column; gap: 4px; font-family: var(--term); font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: var(--cy); }
+#gate input { font: 16px var(--body); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+#gate button { font-family: var(--term); font-size: 20px; letter-spacing: .1em; text-transform: uppercase; color: #020711; background: var(--cy); border: 0; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+#gate .err { font-family: var(--term); font-size: 18px; color: var(--bad); min-height: 1.2em; }
+#gate p { color: var(--muted); font-size: 14px; }
+#site[hidden] { display: none; }
+</style>
+</head>
+<body>
+<div id="gate">
+  <form id="gf" autocomplete="off">
+    <div class="brand"><b>JDZ</b> Solutions <span>// private preview</span></div>
+    <p>This page is shared with invited people only. Enter the username and password from the email.</p>
+    <label>Username<input id="u" name="u" autocapitalize="none" autocomplete="username" required></label>
+    <label>Password<input id="p" name="p" type="password" autocomplete="current-password" required></label>
+    <div class="err" id="err" role="alert"></div>
+    <button type="submit">Open</button>
+  </form>
+</div>
+<div id="site" hidden>
+<div class="wrap">
+  <header class="hd">
+    <div class="brand"><b>JDZ</b> Solutions <span>// demo for Bob Thompson</span></div>
+    <h1>Real photos in. <span>Cinematic video</span> out.</h1>
+    <p class="lede">Two examples of video made from real photography, where the people and places in the picture stay the people and places in the film. Nothing is invented to fill the gaps.</p>
+    <div class="chips">
+      <span class="chip acc">Cinematic video</span>
+      <span class="chip acc">Photo-locked assets</span>
+      <span class="chip">2 examples</span>
+    </div>
+  </header>
+
+  <section class="ex">
+    <h2>Example 1: one photo, one film</h2>
+    <div class="pair">
+      <figure>
+        <div class="frame"><img data-src="source.jpg" alt="Photograph of a smiling young woman with long blonde hair in a light blue t-shirt, looking down at a laptop, with green foliage behind her"></div>
+        <figcaption><b>The source</b> · photograph by Bob Thompson</figcaption>
+      </figure>
+      <figure>
+        <div class="frame"><video controls playsinline preload="none" data-poster="poster.jpg" data-src="video.mp4"></video></div>
+        <figcaption><b>The result</b> · 31 seconds, with voiceover</figcaption>
+      </figure>
+    </div>
+    <div class="panel">
+      <h3>What this example shows</h3>
+      <p>The photograph is the starting point. The system treats it as a locked asset: it is the reference for who the person is, and it stays the reference in every shot of the film. The film then builds cinematic scenes around her, with camera moves, a library setting and a voiceover, without redrawing her into someone else.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why it is different</h2>
+    <div class="lock">
+      <div class="panel key">
+        <h3>Photo-locked</h3>
+        <p>Real images are loaded as locked assets and used as the reference for every shot. The same person, with the same face, hair and clothes, appears from shot to shot. Logos and seals are added as overlays, not drawn by the AI, so they come out exactly right.</p>
+      </div>
+      <div class="panel fix">
+        <h3>Cinematic</h3>
+        <p>Shots are planned like a film, with framing, camera movement, pacing and voice. The result looks directed, not like a slideshow with a filter on it.</p>
+      </div>
+      <div class="panel gen">
+        <h3>No hallucinated surprises</h3>
+        <p>General AI video tends to invent faces, buildings and logos. Locking the real assets takes away the biggest authenticity risk, so the work is far easier to stand behind with a client who is wary of AI.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ex">
+    <h2>Example 2: still photos, drone-style flight</h2>
+    <figure>
+      <div class="frame"><video controls playsinline preload="none" data-poster="ex2/poster2.jpg" data-src="ex2/video2.mp4"></video></div>
+      <figcaption><b>The result</b> · 38 seconds, with voiceover and original music</figcaption>
+    </figure>
+    <div class="shots">
+      <figure><div class="frame"><img data-src="ex2/a2.jpg" alt="Close view of the pirate ship stand with the scoreboard behind it"></div></figure>
+      <figure><div class="frame"><img data-src="ex2/a3.jpg" alt="Pirate ship seen from across the field, full rigging and sails"></div></figure>
+      <figure><div class="frame"><img data-src="ex2/a4.jpg" alt="Pirate ship with the stadium crowd and sponsor boards"></div></figure>
+      <figure><div class="frame"><img data-src="ex2/a5.jpg" alt="Aerial view of the whole stadium"></div></figure>
+      <figure><div class="frame"><img data-src="ex2/a6.jpg" alt="Bow of the ship with the giant skull, plaza and palms"></div></figure>
+      <figure><div class="frame"><img data-src="ex2/a7.jpg" alt="Wide-angle close-up of the skull figurehead"></div></figure>
+      <figure><div class="frame"><img data-src="ex2/a8.jpg" alt="Cannon smoke in front of the ship"></div></figure>
+      <figcaption class="shotcap"><b>The inputs</b> · seven ordinary still photos, different sizes, angles and years</figcaption>
+    </div>
+    <div class="panel key">
+      <h3>What this example shows</h3>
+      <p>Nobody flew a drone. The seven photos above are the only source material. The system matches the same features from photo to photo, then builds the in-between frames so the camera appears to glide through the scene, as if a drone had been there. That is useful when a client asks for aerial-style footage after the shoot and there is no time or budget to go back.</p>
+    </div>
+    <div class="grid3">
+      <div class="panel fix">
+        <h3>Not ideal inputs</h3>
+        <p>These photos were not shot for this. They vary in resolution, lighting and viewpoint. The result is still strong, which says a lot about what planned shooting would give.</p>
+      </div>
+      <div class="panel gen">
+        <h3>Your photography, your angles</h3>
+        <p>With your own images, you could shoot a scene from several deliberate angles and load them in. That gives the system more to match, and you control the final film.</p>
+      </div>
+      <div class="panel">
+        <h3>No licensing worries</h3>
+        <p>The music is AI generated, so there are no licensing concerns to clear before the video is used.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Talk to me</h2>
+    <div class="panel">
+      <p>If you would like to see what this does with your own photography, reply to my email or write to john@jdzsolutions.co.</p>
+    </div>
+  </section>
+
+  <p class="src">JDZ Solutions. Private demo prepared for Bob Thompson. Please do not forward or post it.</p>
+</div>
+
+</div>
+<script>
+(function () {
+  var H = "bf64813e7881e1793bdac06324b9cc6d99a7ca9c9ecd98c42e6ad313c3cbb06e", KEY = "jdz-bob-ok";
+  function sha(t) {
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)).then(function (b) {
+      return Array.prototype.map.call(new Uint8Array(b), function (x) { return ("0" + x.toString(16)).slice(-2); }).join("");
+    });
+  }
+  function unlock() {
+    document.getElementById("gate").hidden = true;
+    document.getElementById("site").hidden = false;
+    document.querySelectorAll("[data-poster]").forEach(function (el) { el.poster = el.getAttribute("data-poster"); });
+    document.querySelectorAll("[data-src]").forEach(function (el) { el.src = el.getAttribute("data-src"); el.removeAttribute("data-src"); });
+    window.scrollTo(0, 0);
+  }
+  try { if (sessionStorage.getItem(KEY) === H) return unlock(); } catch (e) {}
+  document.getElementById("gf").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var u = document.getElementById("u").value.trim().toLowerCase(), p = document.getElementById("p").value.trim();
+    sha(u + ":" + p).then(function (x) {
+      if (x === H) { try { sessionStorage.setItem(KEY, H); } catch (e) {} unlock(); }
+      else document.getElementById("err").textContent = "That did not match. Try again.";
+    });
+  });
+})();
+</script>
+</body>
+</html>
