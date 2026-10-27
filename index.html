@@ -119,6 +119,12 @@ figcaption b { color: var(--cy); font-weight: 400; }
 .soon { border: 1px dashed var(--line); border-radius: 16px; padding: 22px 18px; background: var(--panel); display: flex; flex-direction: column; gap: 8px; }
 .soon .chip { align-self: flex-start; }
 
+.exh { display: flex; flex-direction: column; gap: 6px; padding-left: 16px; border-left: 4px solid var(--or); }
+.exh .exn { font-family: var(--disp); font-weight: 800; font-size: clamp(30px, 7vw, 48px); line-height: 1; letter-spacing: .06em; text-transform: uppercase; color: var(--or); text-shadow: 0 0 22px rgba(255,159,26,.45); }
+.exh h2 { font-size: clamp(16px, 3.6vw, 22px); letter-spacing: .08em; color: var(--fg); }
+.exh h2::before { content: ""; }
+.divider { border: 0; height: 2px; margin: 8px 0; background: linear-gradient(90deg, transparent, var(--cy), transparent); box-shadow: 0 0 18px var(--cy); }
+.shotlabel { font-family: var(--term); font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 #gate { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 16px; background: var(--bg); }
 #gate form { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; border: 1px solid var(--line); border-radius: 16px; padding: 22px; background: var(--panel); box-shadow: 0 0 40px -24px var(--cy); }
 #gate label { display: flex; flex-direction: column; gap: 4px; font-family: var(--term); font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: var(--cy); }
@@ -155,7 +161,7 @@ figcaption b { color: var(--cy); font-weight: 400; }
   </header>
 
   <section class="ex">
-    <h2>Example 1: one photo, one film</h2>
+    <div class="exh"><span class="exn">Example 1</span><h2>One photo, one film</h2></div>
     <div class="pair">
       <figure>
         <div class="frame"><img data-src="source.jpg" alt="Photograph of a smiling young woman with long blonde hair in a light blue t-shirt, looking down at a laptop, with green foliage behind her"></div>
@@ -172,30 +178,10 @@ figcaption b { color: var(--cy); font-weight: 400; }
     </div>
   </section>
 
-  <section>
-    <h2>Why it is different</h2>
-    <div class="lock">
-      <div class="panel key">
-        <h3>Photo-locked</h3>
-        <p>Real images are loaded as locked assets and used as the reference for every shot. The same person, with the same face, hair and clothes, appears from shot to shot. Logos and seals are added as overlays, not drawn by the AI, so they come out exactly right.</p>
-      </div>
-      <div class="panel fix">
-        <h3>Cinematic</h3>
-        <p>Shots are planned like a film, with framing, camera movement, pacing and voice. The result looks directed, not like a slideshow with a filter on it.</p>
-      </div>
-      <div class="panel gen">
-        <h3>No hallucinated surprises</h3>
-        <p>General AI video tends to invent faces, buildings and logos. Locking the real assets takes away the biggest authenticity risk, so the work is far easier to stand behind with a client who is wary of AI.</p>
-      </div>
-    </div>
-  </section>
+  <hr class="divider">
 
   <section class="ex">
-    <h2>Example 2: still photos, drone-style flight</h2>
-    <figure>
-      <div class="frame"><video controls playsinline preload="none" data-poster="ex2/poster2.jpg" data-src="ex2/video2.mp4"></video></div>
-      <figcaption><b>The result</b> · 38 seconds, with voiceover and original music</figcaption>
-    </figure>
+    <div class="exh"><span class="exn">Example 2</span><h2>Still photos, drone-style flight</h2></div>
     <div class="shots">
       <figure><div class="frame"><img data-src="ex2/a2.jpg" alt="Close view of the pirate ship stand with the scoreboard behind it"></div></figure>
       <figure><div class="frame"><img data-src="ex2/a3.jpg" alt="Pirate ship seen from across the field, full rigging and sails"></div></figure>
@@ -206,6 +192,11 @@ figcaption b { color: var(--cy); font-weight: 400; }
       <figure><div class="frame"><img data-src="ex2/a8.jpg" alt="Cannon smoke in front of the ship"></div></figure>
       <figcaption class="shotcap"><b>The inputs</b> · seven ordinary still photos, different sizes, angles and years</figcaption>
     </div>
+
+    <figure>
+      <div class="frame"><video controls playsinline preload="none" data-poster="ex2/poster2.jpg" data-src="ex2/video2.mp4"></video></div>
+      <figcaption><b>The result</b> · 38 seconds, with voiceover and original music</figcaption>
+    </figure>
     <div class="panel key">
       <h3>What this example shows</h3>
       <p>Nobody flew a drone. The seven photos above are the only source material. The system matches the same features from photo to photo, then builds the in-between frames so the camera appears to glide through the scene, as if a drone had been there. That is useful when a client asks for aerial-style footage after the shoot and there is no time or budget to go back.</p>
@@ -222,6 +213,26 @@ figcaption b { color: var(--cy); font-weight: 400; }
       <div class="panel">
         <h3>No licensing worries</h3>
         <p>The music is AI generated, so there are no licensing concerns to clear before the video is used.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section>
+    <h2>Why it is different</h2>
+    <div class="lock">
+      <div class="panel key">
+        <h3>Photo-locked</h3>
+        <p>Real images are loaded as locked assets and used as the reference for every shot. The same person, with the same face, hair and clothes, appears from shot to shot. Logos and seals are added as overlays, not drawn by the AI, so they come out exactly right.</p>
+      </div>
+      <div class="panel fix">
+        <h3>Cinematic</h3>
+        <p>Shots are planned like a film, with framing, camera movement, pacing and voice. The result looks directed, not like a slideshow with a filter on it.</p>
+      </div>
+      <div class="panel gen">
+        <h3>No hallucinated surprises</h3>
+        <p>General AI video tends to invent faces, buildings and logos. Locking the real assets takes away the biggest authenticity risk, so the work is far easier to stand behind with a client who is wary of AI.</p>
       </div>
     </div>
   </section>
