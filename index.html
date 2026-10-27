@@ -125,14 +125,15 @@ figcaption b { color: var(--cy); font-weight: 400; }
 #gate input { font: 16px var(--body); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
 #gate button { font-family: var(--term); font-size: 20px; letter-spacing: .1em; text-transform: uppercase; color: #020711; background: var(--cy); border: 0; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
 #gate .err { font-family: var(--term); font-size: 18px; color: var(--bad); min-height: 1.2em; }
+#gate .brand { flex-direction: column; align-items: flex-start; gap: 0; }
 #gate p { color: var(--muted); font-size: 14px; }
-#site[hidden] { display: none; }
+#site[hidden], #gate[hidden] { display: none; }
 </style>
 </head>
 <body>
 <div id="gate">
   <form id="gf" autocomplete="off">
-    <div class="brand"><b>JDZ</b> Solutions <span>// private preview</span></div>
+    <div class="brand"><div><b>JDZ</b> Solutions</div><span>// private preview</span></div>
     <p>This page is shared with invited people only. Enter the username and password from the email.</p>
     <label>Username<input id="u" name="u" autocapitalize="none" autocomplete="username" required></label>
     <label>Password<input id="p" name="p" type="password" autocomplete="current-password" required></label>
