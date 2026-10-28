@@ -139,6 +139,14 @@ figure.alt { max-width: 640px; }
 #lb .ct { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; font-family: var(--term); font-size: 20px; letter-spacing: .1em; color: var(--muted); }
 #lb.one .pv, #lb.one .nx, #lb.one .ct { display: none; }
 #lb[hidden] { display: none; }
+.watch { font-family: var(--term); font-size: 20px; letter-spacing: .08em; text-transform: uppercase; color: var(--cy); background: transparent; border: 1px solid var(--cy); border-radius: 999px; padding: 4px 16px; cursor: pointer; align-self: flex-start; }
+.watch:hover { background: rgba(52,215,255,.12); }
+#vm { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 12px; background: rgba(2,7,17,.94); padding: 56px max(16px, env(safe-area-inset-right, 0px)); }
+#vm.on { display: flex; }
+#vm .box { width: min(100%, 960px); aspect-ratio: 16 / 9; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #000; box-shadow: 0 0 60px -20px var(--cy); }
+#vm iframe { width: 100%; height: 100%; border: 0; display: block; }
+#vm .x { position: absolute; top: 8px; right: max(12px, env(safe-area-inset-right, 0px)); font-size: 24px; line-height: 1; color: var(--cy); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; width: 48px; height: 48px; cursor: pointer; }
+#vm .alt { font-family: var(--term); font-size: 18px; letter-spacing: .08em; color: var(--muted); }
 #gate { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 16px; background: var(--bg); }
 #gate form { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; border: 1px solid var(--line); border-radius: 16px; padding: 22px; background: var(--panel); box-shadow: 0 0 40px -24px var(--cy); }
 #gate label { display: flex; flex-direction: column; gap: 4px; font-family: var(--term); font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: var(--cy); }
@@ -267,7 +275,7 @@ figure.alt { max-width: 640px; }
       </div>
       <div class="panel">
         <h3>The film it was modeled on</h3>
-        <p><a href="https://youtu.be/wQus4MhS7KY" target="_blank" rel="noopener">Watch the original video</a></p>
+        <p><button type="button" class="watch" id="watch">&#9654; Watch the original video</button></p>
       </div>
     </div>
   </section>
@@ -375,6 +383,22 @@ figure.alt { max-width: 640px; }
     if (sx === null) return; var dx = e.changedTouches[0].clientX - sx; sx = null;
     if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
   });
+})();
+</script>
+<div id="vm" role="dialog" aria-modal="true" aria-label="Original video">
+  <button class="x" type="button" aria-label="Close">&times;</button>
+  <div class="box"><iframe title="The original video this example was modeled on" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+  <div class="alt">Will not play? <a href="https://youtu.be/wQus4MhS7KY" target="_blank" rel="noopener">Open it on YouTube</a></div>
+</div>
+<script>
+(function () {
+  var vm = document.getElementById("vm"), fr = vm.querySelector("iframe"), btn = document.getElementById("watch");
+  function open() { fr.src = "https://www.youtube-nocookie.com/embed/wQus4MhS7KY?autoplay=1&rel=0"; vm.classList.add("on"); vm.querySelector(".x").focus(); }
+  function close() { vm.classList.remove("on"); fr.removeAttribute("src"); btn.focus(); }
+  btn.addEventListener("click", open);
+  vm.querySelector(".x").addEventListener("click", close);
+  vm.addEventListener("click", function (e) { if (e.target === vm) close(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && vm.classList.contains("on")) close(); });
 })();
 </script>
 </body>
